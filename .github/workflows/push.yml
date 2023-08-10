@@ -14,8 +14,9 @@ env:
   BUILD_NUMBER: ${{ github.run_id }}
   BUILD_NAME: ${{ github.repository }}
   GITHUB_WORKSPACE: ${{ github.workspace }}
-  GH_TOKEN: ${{ github.token }}
-  IMAGE_NAME: ryantseng0224/spring4shell:latest
+  GH_TOKEN: ${{ secrets.GH_TOKEN }}
+  IMAGE_NAME: ryantseng0224/spring4shell:codetocloud
+  PASSWORD: "qazwsxEDCRFV"
 
     
 jobs:
@@ -25,6 +26,15 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
+        
+      - name: Setup Aqua Pipeline Enforcer
+        uses: aquasecurity/pipeline-enforcer-action@v1.0.0
+        env:
+          CSPM_URL: https://api.cloudsploit.com
+          AQUA_URL: https://api.supply-chain.cloud.aquasec.com
+        with:
+          aqua-key: ${{ secrets.AQUA_KEY }}
+          aqua-secret: ${{ secrets.AQUA_SECRET }}        
 
       - name: Run Aqua scanner
         uses: docker://aquasec/aqua-scanner
@@ -45,8 +55,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v3
-#    - name: Build the Docker image
-#      run: docker build . --file Dockerfile --tag $IMAGE_NAME
+    - name: Build the Docker image
+      run: docker build . --file Dockerfile --tag $IMAGE_NAME
 #    - name: Aqua Image Scanner
 #      run: |
 #        docker image ls 
@@ -57,24 +67,27 @@ jobs:
 #      run: |
 #        docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD
 #        docker push $IMAGE_NAME 
-
     - name: Aqua Release Artifact (SBOM)
       run: |
-          export BILLY_SERVER=https://billy.codesec.aquasec.com
-          curl -sLo install.sh download.codesec.aquasec.com/billy/install.sh
-          curl -sLo install.sh.checksum https://github.com/argonsecurity/releases/releases/latest/download/install.sh.checksum
-          if ! cat install.sh.checksum | sha256sum ; then
-          echo "install.sh checksum failed"
-          exit 1
-          fi
-          BINDIR="." sh install.sh
-          rm install.sh install.sh.checksum
-          ./billy generate \
-            --access-token "${{ github.token }}" \
-            --aqua-key "${{ secrets.AQUA_KEY }}" \
-            --aqua-secret "${{ secrets.AQUA_SECRET }}" \
-            #--cspm-url https://asia-1.api.cloudsploit.com \
-            --artifact-path $IMAGE_NAME
+         export BILLY_SERVER=https://billy.codesec.aquasec.com
+         curl -sLo install.sh download.codesec.aquasec.com/billy/install.sh
+         curl -sLo install.sh.checksum https://github.com/argonsecurity/releases/releases/latest/download/install.sh.checksum
+         if ! cat install.sh.checksum | sha256sum ; then
+         echo "install.sh checksum failed"
+         exit 1
+         fi
+         BINDIR="." sh install.sh
+         rm install.sh install.sh.checksum
+         ./billy generate \
+           --access-token "${{ secrets.GH_TOKEN }}" \
+           --aqua-key "${{ secrets.AQUA_KEY }}" \
+           --aqua-secret "${{ secrets.AQUA_SECRET }}" \
+           --artifact-path $IMAGE_NAME 
+           # The docker image name:tag of the newly built image
+           # --artifact-path "my-image-name:${{ env.tag-version }}" 
+           # OR the path to the root folder of your project. I.e my-repo/my-app 
+           # --artifact-path "${{env.MY_APP_ROOT}}"
+
         
     - uses: actions/upload-artifact@v3
       with:
