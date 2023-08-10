@@ -14,7 +14,7 @@ env:
   BUILD_NUMBER: ${{ github.run_id }}
   BUILD_NAME: ${{ github.repository }}
   GITHUB_WORKSPACE: ${{ github.workspace }}
-  GH_TOKEN: ${{ github.token }}
+  GH_TOKEN: ${{ secrets.GH_TOKEN }}
   IMAGE_NAME: ryantseng0224/spring4shell:codetocloud
 
     
@@ -70,7 +70,7 @@ jobs:
           BINDIR="." sh install.sh
           rm install.sh install.sh.checksum
           ./billy generate \
-            --access-token "${{ github.token }}" \
+            --access-token "${{ secrets.GH_TOKEN }}" \
             --aqua-key "${{ secrets.AQUA_KEY }}" \
             --aqua-secret "${{ secrets.AQUA_SECRET }}" \
             #--cspm-url https://asia-1.api.cloudsploit.com \
