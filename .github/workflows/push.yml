@@ -5,15 +5,12 @@ on:
     branches: [ "main" ]
 
 env:
-  AQUA_KEY: ${{ secrets.AQUA_KEY }}
-  AQUA_SECRET: ${{ secrets.AQUA_SECRET }}
   GITHUB_TOKEN: ${{ github.token }}
-  TRIVY_RUN_AS_PLUGIN: 'aqua'
 
     
 jobs:
   aqua:
-    name: Aqua scanner
+    name: Aqua Supply Chain Security
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
@@ -22,8 +19,14 @@ jobs:
       - name: Run Aqua scanner
         uses: docker://aquasec/aqua-scanner
         with:
-          args: trivy fs --scanners config,vuln,secret .
+          args: trivy fs --format sarif --output trivy-results.sarif --security-checks config,vuln,secret --debug --sast --reachability . 
           # To customize which severities to scan for, add the following flag: --severity UNKNOWN,LOW,MEDIUM,HIGH,CRITICAL
           # To enable SAST scanning, add: --sast
           # To enable reachability scanning, add: --reachability
           # To enable npm/dotnet non-lock file scanning, add: --package-json / --dotnet-proj
+        env:
+          AQUA_KEY: ${{ secrets.AQUA_KEY }}
+          AQUA_SECRET: ${{ secrets.AQUA_SECRET }}
+          #AQUA_URL: https://api.asia-1.supply-chain.cloud.aquasec.com
+          #CSPM_URL: https://asia-1.api.cloudsploit.com
+          TRIVY_RUN_AS_PLUGIN: 'aqua'
