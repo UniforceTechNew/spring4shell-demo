@@ -30,8 +30,8 @@ jobs:
       - name: Setup Aqua Pipeline Enforcer
         uses: aquasecurity/pipeline-enforcer-action@v1.0.0
         env:
-          CSPM_URL: https://api.cloudsploit.com
-          AQUA_URL: https://api.supply-chain.cloud.aquasec.com
+          CSPM_URL: https://8e41b427c6-gw.api.cloudsploit.com
+          AQUA_URL: https://api.8e41b427c6-gw.supply-chain.cloud.aquasec.com
         with:
           aqua-key: ${{ secrets.AQUA_KEY }}
           aqua-secret: ${{ secrets.AQUA_SECRET }}        
