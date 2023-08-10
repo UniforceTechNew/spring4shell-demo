@@ -74,7 +74,8 @@ jobs:
             --aqua-key "${{ secrets.AQUA_KEY }}" \
             --aqua-secret "${{ secrets.AQUA_SECRET }}" \
             #--cspm-url https://asia-1.api.cloudsploit.com \
-            --artifact-path $IMAGE_NAME
+            --artifact-path "${{env.MY_APP_ROOT}}"
+            #--artifact-path $IMAGE_NAME
         
     - uses: actions/upload-artifact@v3
       with:
