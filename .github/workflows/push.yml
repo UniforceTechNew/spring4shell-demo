@@ -49,7 +49,7 @@ jobs:
           AQUA_KEY: ${{ secrets.AQUA_KEY }}
           AQUA_SECRET: ${{ secrets.AQUA_SECRET }}
           AQUA_URL: https://8e41b427c6.cloud.aquasec.com
-          CSPM_URL: https://api.cloudsploit.com/v2
+          CSPM_URL: https://api.cloudsploit.com
           TRIVY_RUN_AS_PLUGIN: 'aqua'
   build:
     name: Build, Scan, and Push Docker image
