@@ -48,8 +48,8 @@ jobs:
         env:
           AQUA_KEY: ${{ secrets.AQUA_KEY }}
           AQUA_SECRET: ${{ secrets.AQUA_SECRET }}
-          AQUA_URL: https://api.asia-1.supply-chain.cloud.aquasec.com
-          CSPM_URL: https://asia-1.api.cloudsploit.com
+          CSPM_URL: https://api.cloudsploit.com
+          AQUA_URL: https://api.supply-chain.cloud.aquasec.com
           TRIVY_RUN_AS_PLUGIN: 'aqua'
   build:
     name: Build, Scan, and Push Docker image
