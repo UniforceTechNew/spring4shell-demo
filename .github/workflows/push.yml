@@ -83,7 +83,7 @@ jobs:
            --access-token "${{ secrets.GH_TOKEN }}" \
            --aqua-key "${{ secrets.AQUA_KEY }}" \
            --aqua-secret "${{ secrets.AQUA_SECRET }}" \
-           #--cspm-url https://api.cloudsploit.com/v2 \
+           --cspm-url https://api.cloudsploit.com \
            --artifact-path $IMAGE_NAME 
            # The docker image name:tag of the newly built image
            # --artifact-path "my-image-name:${{ env.tag-version }}" 
