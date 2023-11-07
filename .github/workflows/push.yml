@@ -16,7 +16,7 @@ env:
   GITHUB_WORKSPACE: ${{ github.workspace }}
   GH_TOKEN: ${{ secrets.GH_TOKEN }}
   IMAGE_NAME: ryantseng0224/spring4shell:codetocloud
-  PASSWORD: "qazwsxEDCRFV"
+  PASSWORD: "qazwsxEDCRFV1"
 
     
 jobs:
